@@ -46,7 +46,7 @@ ys = ttk.Scrollbar(root, orient = 'vertical', command = t.yview)
 xs = ttk.Scrollbar(root, orient = 'horizontal', command = t.xview)
 t['yscrollcommand'] = ys.set
 t['xscrollcommand'] = xs.set
-t.insert('end', "Добро пожаловать в упрощенный текстовый редактор 'Анаконда'\nНажмите Ctrl+O для открытия файла\nНажмите Ctrl+N для нового файла")
+t.insert('end', "Добро пожаловать в упрощенный текстовый редактор 'Анаконда'\nНажмите Ctrl+O для открытия файла\nНажмите Ctrl+N для нового файла\nНажмите Ctrl+S для сохранения файла")
 t.grid(column = 0, row = 0, sticky = 'nwes')
 xs.grid(column = 0, row = 1, sticky = 'we')
 ys.grid(column = 1, row = 0, sticky = 'ns')
