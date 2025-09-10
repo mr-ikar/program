@@ -1,12 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+import gc
 root = Tk()
 root.title("Текстовый редактор 'Анаконда'")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
 
 def newFile(event):
     t.delete(1.0, 'end')
+    gc.collect()
 def openFile(event):
     file_path = filedialog.askopenfilename(
         title="Открыть текстовый файл",
@@ -22,6 +24,7 @@ def openFile(event):
     # Вставить текст файла в текстовое окно
     t.delete(1.0, 'end')  # Очистить текстовое окно
     t.insert('end', content)
+    gc.collect() # Очищение мусора из оперативной памяти (ОЗУ)
 def saveFile(event):
     file_path = filedialog.asksaveasfilename(
         title="Сохранить файл",
