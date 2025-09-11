@@ -8,6 +8,7 @@ mainframe = ttk.Frame(root, padding="3 3 12 12")
 
 def newFile(event):
     t.delete(1.0, 'end')
+    root.title("Новый файл - Текстовый редактор 'Анаконда'")
     gc.collect()
 def openFile(event):
     file_path = filedialog.askopenfilename(
@@ -24,6 +25,7 @@ def openFile(event):
     # Вставить текст файла в текстовое окно
     t.delete(1.0, 'end')  # Очистить текстовое окно
     t.insert('end', content)
+    root.title(file_path+" - Текстовый редактор 'Анаконда'")
     gc.collect() # Очищение мусора из оперативной памяти (ОЗУ)
 def saveFile(event):
     file_path = filedialog.asksaveasfilename(
@@ -57,3 +59,4 @@ root.bind("<Control-o>", openFile)
 root.bind("<Control-n>", newFile)
 root.bind("<Control-s>", saveFile)
 root.mainloop()
+
