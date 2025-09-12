@@ -1,3 +1,9 @@
+import ctypes
+try:
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+except:
+    pass  # Fallback for older Windows versions
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
