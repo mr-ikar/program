@@ -4,6 +4,7 @@ from tkinter import filedialog
 import gc
 root = Tk()
 root.title("Текстовый редактор 'Анаконда'")
+root.geometry("512x512")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
 
 def newFile(event):
