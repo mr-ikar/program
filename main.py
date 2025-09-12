@@ -108,6 +108,8 @@ def findDialog(event):
 
     find_entry.bind("<Return>", lambda e: find_word())
     find_entry.bind("<Escape>", lambda e: cancel_find())
+    replace_entry.bind("<Return>", lambda e: replace_first())
+    replace_entry.bind("<Escape>", lambda e: cancel_find())
 
     # Button to confirm search
     find_button = ttk.Button(find_frame, text="Find", command=find_word)
