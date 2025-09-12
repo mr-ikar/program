@@ -58,6 +58,8 @@ def findDialog(event):
     find_entry = ttk.Entry(find_frame)
     find_entry.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
     find_entry.focus_set()  # Focus on the entry
+    replace_entry = ttk.Entry(find_frame)
+    replace_entry.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 
     # Function to handle the search
     def find_word():
@@ -75,15 +77,28 @@ def findDialog(event):
                 t.tag_add("found", start, end)
                 t.tag_config("found", background="yellow")
                 start = end
-        # Close the find widget
         find_frame.destroy()
 
-    # Function to cancel and close
     def cancel_find():
         t.tag_remove("found", "1.0", 'end')
         find_frame.destroy()
+    
+    def replace_first():
+        word = find_entry.get()
+        replacement = replace_entry.get()
+        if word and replacement:
+            start = t.search(word, "1.0", stopindex='end')
+            if start:
+                end = f"{start}+{len(word)}c"
+                t.delete(start, end)
+                t.insert(start, replacement)
+                # Find the next match after replacement
+                next_start = t.search(word, start, stopindex=tk.END)
+                if next_start:
+                    t.see(next_start)
+                    t.tag_remove("found", "1.0", tk.END)
+                    find_word()  # Re-highlight all matches
 
-    # Bind Enter and Escape keys
     find_entry.bind("<Return>", lambda e: find_word())
     find_entry.bind("<Escape>", lambda e: cancel_find())
 
@@ -95,7 +110,10 @@ def findDialog(event):
     cancel_button = ttk.Button(find_frame, text="Cancel", command=cancel_find)
     cancel_button.grid(row=0, column=2, padx=5, pady=5)
 
-t = Text(root, width = 40, height = 5, wrap = "none")
+    replace_button = ttk.Button(find_frame, text="Replace", command=replace_first)
+    replace_button.grid(row=1, column=1, padx=5, pady=5)
+
+t = Text(root, width = 40, height = 5, wrap = "none", undo=True)
 ys = ttk.Scrollbar(root, orient = 'vertical', command = t.yview)
 xs = ttk.Scrollbar(root, orient = 'horizontal', command = t.xview)
 t['yscrollcommand'] = ys.set
@@ -111,5 +129,7 @@ root.bind("<Control-o>", openFile)
 root.bind("<Control-n>", newFile)
 root.bind("<Control-s>", saveFile)
 root.bind("<Control-f>", findDialog)
+root.bind("<Control-z>", lambda e: t.edit_undo())
+root.bind("<Control-y>", lambda e: t.edit_redo())
 root.mainloop()
 
