@@ -80,6 +80,7 @@ def findDialog(event):
 
     # Function to cancel and close
     def cancel_find():
+        t.tag_remove("found", "1.0", 'end')
         find_frame.destroy()
 
     # Bind Enter and Escape keys
