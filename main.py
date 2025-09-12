@@ -12,10 +12,16 @@ root = Tk()
 root.title("Текстовый редактор 'Анаконда'")
 root.geometry("512x512")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
-
+def clear_undo_stack(): # жесткий костыль
+    content = t.get("1.0", 'end')
+    t.config(undo=False)
+    t.delete("1.0", 'end')
+    t.insert("1.0", content)
+    t.config(undo=True)
 def newFile(event):
     t.delete(1.0, 'end')
     root.title("Новый файл - Текстовый редактор 'Анаконда'")
+    clear_undo_stack()
     gc.collect()
 def openFile(event):
     file_path = filedialog.askopenfilename(
@@ -33,6 +39,7 @@ def openFile(event):
     t.delete(1.0, 'end')  # Очистить текстовое окно
     t.insert('end', content)
     root.title(file_path+" - Текстовый редактор 'Анаконда'")
+    clear_undo_stack()
     gc.collect() # Очищение мусора из оперативной памяти (ОЗУ)
 def saveFile(event):
     file_path = filedialog.asksaveasfilename(
