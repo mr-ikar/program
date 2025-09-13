@@ -56,6 +56,7 @@ def saveFile(event):
     # Save to file with UTF-8 encoding
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(content)
+    notify("Successfully saved file to "+file_path)
 def findDialog(event):
     # Create a frame for the find widget
     find_frame = ttk.Frame(root)
@@ -99,12 +100,6 @@ def findDialog(event):
                 end = f"{start}+{len(word)}c"
                 t.delete(start, end)
                 t.insert(start, replacement)
-                # Find the next match after replacement
-                next_start = t.search(word, start, stopindex=tk.END)
-                if next_start:
-                    t.see(next_start)
-                    t.tag_remove("found", "1.0", tk.END)
-                    find_word()  # Re-highlight all matches
 
     find_entry.bind("<Return>", lambda e: find_word())
     find_entry.bind("<Escape>", lambda e: cancel_find())
@@ -121,6 +116,12 @@ def findDialog(event):
 
     replace_button = ttk.Button(find_frame, text="Replace", command=replace_first)
     replace_button.grid(row=1, column=1, padx=5, pady=5)
+def notify(_text):
+    notify_frame = ttk.Frame(root)
+    notify_frame.grid(row=0, column=0, sticky="en", padx=5, pady=5)
+    notify_text = ttk.Label(notify_frame, text=_text)
+    notify_text.grid(row=0, column=0, padx=5, pady=5)
+    root.after(10000, lambda: notify_frame.destroy())
 
 t = Text(root, width = 40, height = 5, wrap = "none", undo=True)
 ys = ttk.Scrollbar(root, orient = 'vertical', command = t.yview)
