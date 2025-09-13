@@ -8,6 +8,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 import gc
+import subprocess
 root = Tk()
 root.title("Текстовый редактор 'Анаконда'")
 root.geometry("512x512")
@@ -40,6 +41,10 @@ def openFile(event):
     t.insert('end', content)
     root.title(file_path+" - Текстовый редактор 'Анаконда'")
     clear_undo_stack()
+    if ".py" in file_path:
+        notify("Looks like youre editing a Python script! Press F5 to run it directly.")
+        global python_file
+        python_file = file_path
     gc.collect() # Очищение мусора из оперативной памяти (ОЗУ)
 def saveFile(event):
     file_path = filedialog.asksaveasfilename(
@@ -100,6 +105,8 @@ def findDialog(event):
                 end = f"{start}+{len(word)}c"
                 t.delete(start, end)
                 t.insert(start, replacement)
+def runPy(event):
+    subprocess.run(["python", python_file])
 
     find_entry.bind("<Return>", lambda e: find_word())
     find_entry.bind("<Escape>", lambda e: cancel_find())
@@ -141,5 +148,6 @@ root.bind("<Control-s>", saveFile)
 root.bind("<Control-f>", findDialog)
 root.bind("<Control-z>", lambda e: t.edit_undo())
 root.bind("<Control-y>", lambda e: t.edit_redo())
+root.bind("<F5>", runPy)
 root.mainloop()
 
